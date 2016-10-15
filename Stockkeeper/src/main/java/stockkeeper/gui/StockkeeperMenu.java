@@ -98,7 +98,7 @@ public class StockkeeperMenu extends GuiScreen {
 		{
 			String temp = StockKeeperConfig.password;
 			StockKeeperConfig.password = "";
-			StockkeeperJSON.writeToFile(config, "D:/config.json");
+			StockkeeperJSON.writeToFile(config, "config.json");
 			StockKeeperConfig.password = temp;
 
 		}
@@ -112,14 +112,20 @@ public class StockkeeperMenu extends GuiScreen {
 		labelList.clear();
 		this.defaultGroupText = new GuiTextField(0, this.fontRendererObj, this.width/2 , this.height/2 -20 , 100, 20);
 		this.defaultGroupText.setMaxStringLength(23);
-		this.defaultGroupText.setText(StockKeeperConfig.defaultGroup);
+		if(StockKeeperConfig.defaultGroup != null)
+			this.defaultGroupText.setText(StockKeeperConfig.defaultGroup);
+		else
+			this.defaultGroupText.setText("");
 
 		this.defaultGroup = new GuiLabel(this.fontRendererObj, 0, this.width/2 - 100, this.height/2 - 20, 100, 20, 0xFFFFFF);
 		defaultGroup.addLine("Default group");
 		this.labelList.add(defaultGroup);
 
 		this.passwordText = new GuiTextField(1, this.fontRendererObj, this.width/2 , this.height/2 , 100, 20);
-		this.passwordText.setText(StockKeeperConfig.password);
+		if(StockKeeperConfig.password != null)
+			this.passwordText.setText(StockKeeperConfig.password);
+		else
+			this.passwordText.setText("");
 		this.passwordText.setMaxStringLength(23);
 
 		this.password = new GuiLabel(this.fontRendererObj, 1, this.width/2 - 100, this.height/2, 100, 20, 0xFFFFFF);
@@ -127,7 +133,10 @@ public class StockkeeperMenu extends GuiScreen {
 		this.labelList.add(password);
 
 		this.ipText = new GuiTextField(2, this.fontRendererObj, this.width/2 , this.height/2 + 20, 100, 20);
-		this.ipText.setText(StockKeeperConfig.stockkeeperIp);
+		if(StockKeeperConfig.stockkeeperIp != null)
+			this.ipText.setText(StockKeeperConfig.stockkeeperIp);
+		else
+			this.ipText.setText("");
 		this.ipText.setMaxStringLength(23);
 
 		this.ip = new GuiLabel(this.fontRendererObj, 2, this.width/2 - 100, this.height/2 + 20, 100, 20, 0xFFFFFF);

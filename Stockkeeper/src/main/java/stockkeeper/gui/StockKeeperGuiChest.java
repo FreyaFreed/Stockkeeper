@@ -10,6 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stockkeeper.data.Position;
+import stockkeeper.mod.StockKeeperConfig;
 
 public class StockKeeperGuiChest extends GuiChest {
 
@@ -39,6 +40,8 @@ public class StockKeeperGuiChest extends GuiChest {
 		this.chestGroup = event.group;
 		if(text != null && this.chestGroup != null)
 			text.setText(this.chestGroup);
+		else if(text != null)
+			text.setText(StockKeeperConfig.defaultGroup);
 
 
 	}
