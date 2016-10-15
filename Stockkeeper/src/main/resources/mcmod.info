@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "modid": "stockkeeper",
+  "name": "Stockkeeper",
+  "description": "Helps you keep stock of your chests. Especially handy for groups of people working together!",
+  "version": "$0.1.0-alpha",
+  "mcversion": "$1.10.2",
+  "url": "https://github.com/FreyaFreed/Stockkeeper",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["FreyaFreed"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
