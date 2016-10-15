@@ -93,7 +93,7 @@ public class StockkeeperMenu extends GuiScreen {
 		StockKeeperConfig.password = passwordText.getText();
 		StockKeeperConfig config = StockKeeperConfig.Instance();
 		if(StockKeeperConfig.savePassword)
-			StockkeeperJSON.writeToFile(config, "D:/config.json");
+			StockkeeperJSON.writeToFile(config, "config.json");
 		else
 		{
 			String temp = StockKeeperConfig.password;

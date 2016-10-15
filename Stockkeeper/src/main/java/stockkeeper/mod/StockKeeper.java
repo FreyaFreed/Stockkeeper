@@ -426,7 +426,7 @@ public class StockKeeper
 		LOG.setLevel(Level.FINE);
 		try
 		{
-			JsonObject config =  StockkeeperJSON.readFromFile("D:/config.json");
+			JsonObject config =  StockkeeperJSON.readFromFile("config.json");
 			StockKeeperConfig.stockkeeperIp = config.get("stockkeeperIp").getAsString();
 			StockKeeperConfig.defaultGroup = config.get("defaultGroup").getAsString();
 			StockKeeperConfig.password = config.get("password").getAsString();
