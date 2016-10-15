@@ -454,8 +454,15 @@ public class StockKeeper
 			//lower.setAccessible(true); upper.setAccessible(true);
 			//IInventory lowerInv = (IInventory)lower.get(oldGui);
 			///IInventory upperInv =  (IInventory)upper.get(oldGui);
-			IInventory lowerInv = new ContainerLocalMenu("lowerChestInventory",new TextComponentString("lower"), 54);//(IInventory)lower.get(oldGui);
-			IInventory upperInv = new ContainerLocalMenu("upperChestInventory",new TextComponentString("upper"), 54);//(IInventory) upper.get(oldGui);			
+			
+			//doublechest
+			int CHESTSIZE = 54;
+			//singlechest
+			if(bottomChestPos == null)
+				CHESTSIZE = 27;			
+				
+			IInventory lowerInv = new ContainerLocalMenu("lowerChestInventory",new TextComponentString("Chest"), CHESTSIZE);//(IInventory)lower.get(oldGui);
+			IInventory upperInv = new ContainerLocalMenu("upperChestInventory",new TextComponentString("Inventory"), 54);//(IInventory) upper.get(oldGui);			
 			
 			StockKeeperGuiChest newGui = new StockKeeperGuiChest(upperInv, lowerInv, "...", toPosition(topChestPos), toPosition(bottomChestPos));
 			event.setGui(newGui);
