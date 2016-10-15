@@ -72,6 +72,7 @@ public class MessageThread implements Runnable, ClipboardOwner {
 	}
 	private void handleReturnMessage(StockkeeperReturnMessage returnMessage, Socket clientSocket)
 	{
+		// TODO Make sure return messages are neatly handled to give the client info about the success or failure
 		switch(returnMessage.messageType)
 		{
 		case COUNT:

@@ -65,6 +65,7 @@ import stockkeeper.gui.StockkeeperMenu;
 import stockkeeper.network.ChestContentsMessage;
 import stockkeeper.network.KeyExchangeMessage;
 import stockkeeper.network.KeyExchangeMessage.MessageType;
+import stockkeeper.network.StockKeeperMessage;
 import stockkeeper.network.client.MessageFactory;
 import stockkeeper.network.client.StockKeeperClient;
 import stockkeeper.worldinfo.WorldInfo;
@@ -266,7 +267,7 @@ public class StockKeeper
 			replaceChestGui(event);
 		}
 
-		ChestContentsMessage topChest, bottomChest;
+		StockKeeperMessage topChest, bottomChest;
 		GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;		
 		if(screen instanceof GuiChest)
 		{

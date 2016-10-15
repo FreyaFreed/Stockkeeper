@@ -25,15 +25,18 @@ public class MessageFactory {
 	static WorldInfo info = new WorldInfo();
 
 	//Adjacentchest must be null for a singlechest
-	public static ChestContentsMessage createChestContentsMessage(Position chest_,Position adjacentChest_, List<Stack> stacks_)
+	public static StockKeeperMessage createChestContentsMessage(Position chest,Position adjacentChest, List<Stack> stacks)
 	{
 
-		ChestContentsMessage message;
-		if(adjacentChest_ != null)
-			message = new ChestContentsMessage(chest_, adjacentChest_, stacks_);
-		else
-			message = new ChestContentsMessage(chest_, stacks_);
-
+		
+		//if(adjacentChest_ != null)
+		//	message = new ChestContentsMessage(chest_, adjacentChest_, stacks_);
+		//else
+		//	message = new ChestContentsMessage(chest_, stacks_);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.CHESTCONTENTS);
+		message.setField("chest", chest);
+		message.setField("stacks",stacks);
+		message.setField("adjacentChest", adjacentChest);
 		addMessageHeader(message);
 		return message;
 	}
@@ -48,51 +51,65 @@ public class MessageFactory {
 	}
 
 	public static StockKeeperMessage createChestGroupMessage(Position top, Position bottom) {
-		checkChestGroupMessage message = new checkChestGroupMessage(top,bottom);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.CHECKGROUP);
+		message.setField("top", top);
+		message.setField("bottom",bottom);
 		addMessageHeader(message);
 		return message;
 	}
 
-	public static CountMessage createCountMessage(String itemName_)
+	public static StockKeeperMessage createCountMessage(String itemName)
 	{
-		CountMessage message = new CountMessage(itemName_);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.COUNT);
+		message.setField("itemName",itemName);		
 		addMessageHeader(message);
 		return message;
 	}
 
 	public static StockKeeperMessage createFindItemMessage(String itemName) {
-		FindItemMessage message = new FindItemMessage(itemName) ;
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.FINDITEM);
+		message.setField("itemName",itemName);	
 		addMessageHeader(message);		
 		return message;
 	}
 
 	public static StockKeeperMessage createGroupChangedMessage(String newGroup, Position top, Position bottom) {
-		GroupChangedMessage message = new GroupChangedMessage(newGroup, top, bottom) ;
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.FINDITEM);
+		message.setField("newGroup",newGroup);	
+		message.setField("top",top);	
+		message.setField("bottom",bottom);	
 		addMessageHeader(message);	
 		return message;
 	}
 
 	public static StockKeeperMessage createGroupInviteMessage(String groupname, int grouplevel, String username) {
-		InviteGroupMessage message = new InviteGroupMessage(groupname, grouplevel, username);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.INVITEGROUP);
+		message.setField("groupname",groupname);	
+		message.setField("grouplevel",grouplevel);	
+		message.setField("username",username);	
 		addMessageHeader(message);	
 		return message;
 
 	}
 
 	public static StockKeeperMessage createGroupMessage(String groupname) {
-		MakeGroupMessage message = new MakeGroupMessage(groupname);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.MAKEGROUP);
+		message.setField("groupname",groupname);	
 		addMessageHeader(message);	
 		return message;
 	}
 
 	public static StockKeeperMessage createInviteMessage(int level) {
-		InviteMessage message = new InviteMessage(level);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.INVITE);
+		message.setField("level",level);
 		addMessageHeader(message);	
 		return message;
 	}
 
 	public static StockKeeperMessage createRegistrationMessage(String inviteCode, String password) {
-		RegisterMessage message = new RegisterMessage(inviteCode);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.REGISTER);
+		message.setField("inviteCode",inviteCode);
+		message.setField("password",password);
 		addMessageHeader(message);	
 		return message;
 	}
