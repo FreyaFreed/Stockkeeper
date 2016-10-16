@@ -89,8 +89,10 @@ public class MessageThread implements Runnable, ClipboardOwner {
 			break;
 		case INVALID_PASSWORD:
 			handleInvalidPassword();
+			break;
 		case CONNECTION_FAILED:
 			StockKeeper.isConnected = false;
+			break;
 		}
 
 	}
