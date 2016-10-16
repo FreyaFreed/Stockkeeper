@@ -74,7 +74,7 @@ public class MessageFactory {
 	}
 
 	public static StockKeeperMessage createGroupChangedMessage(String newGroup, Position top, Position bottom) {
-		StockKeeperMessage message = new StockKeeperMessage(MessageType.FINDITEM);
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.GROUPCHANGED);
 		message.setField("newGroup",newGroup);	
 		message.setField("top",top);	
 		message.setField("bottom",bottom);	
