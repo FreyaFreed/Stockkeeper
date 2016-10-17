@@ -14,6 +14,7 @@ import java.util.SortedMap;
 import javax.crypto.SecretKey;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
+import javax.sql.rowset.CachedRowSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
@@ -48,27 +49,59 @@ public class MessageThread implements Runnable, ClipboardOwner {
 	}
 
 	private void handleCheckGroup(StockkeeperReturnMessage returnMessage) {
-		ChestGroupReturnMessage groupMessage = (ChestGroupReturnMessage)returnMessage;
-		MinecraftForge.EVENT_BUS.post(new ChestGroupEvent(groupMessage.group));
+		if(returnMessage.success)	
+		{
+			String groupName = (String)returnMessage.getField("groupName");
+			MinecraftForge.EVENT_BUS.post(new ChestGroupEvent(groupName));
+		}
+		else
+		{
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("FAILED:" + returnMessage.message));
+		}
 	}
 	private void handleCount(StockkeeperReturnMessage returnMessage) {
-		CountReturnMessage countResult = ((CountReturnMessage)returnMessage);
-		Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Found " + countResult.amount + " " + countResult.itemName + " in stock."));
+				
+		if(returnMessage.success)	
+		{
+			String itemName = (String)returnMessage.getField("itemName");
+			int amount = (Integer)returnMessage.getField("amount");
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Found " + amount + " " + itemName + " in stock."));
+		}
+		else
+		{
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("FAILED:" + returnMessage.message));
+		}
 	}
 	private void handleFindMessage(StockkeeperReturnMessage returnMessage) {
-		FindItemReturnMessage findMessage = (FindItemReturnMessage)returnMessage;
-		SortedMap<Double, Position> closest = StockkeeperMath.getSortedMap(findMessage.itemResults, StockKeeper.toPosition(Minecraft.getMinecraft().thePlayer.getPosition()));
-		Position pos = closest.get(closest.firstKey());
-		TextComponentString text2 = new TextComponentString("Item found in chest at: " + pos.x + ":" + pos.y + ":" + pos.z);
-		Minecraft.getMinecraft().thePlayer.addChatMessage(text2);
+		//FindItemReturnMessage findMessage = (FindItemReturnMessage)returnMessage;
+		if (returnMessage.success)
+		{
+			CachedRowSet itemResults = (CachedRowSet)returnMessage.getField("itemResults");
+			SortedMap<Double, Position> closest = StockkeeperMath.getSortedMap(itemResults, StockKeeper.toPosition(Minecraft.getMinecraft().thePlayer.getPosition()));
+			Position pos = closest.get(closest.firstKey());
+			TextComponentString text2 = new TextComponentString("Item found in chest at: " + pos.x + ":" + pos.y + ":" + pos.z);
+			Minecraft.getMinecraft().thePlayer.addChatMessage(text2);
+		}
+		else
+		{
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("FAILED:" + returnMessage.message));
+		}
 	}
 	private void handleInvite(StockkeeperReturnMessage returnMessage) {
-		InviteReturnMessage invite = (InviteReturnMessage)returnMessage;
-		TextComponentString text = new TextComponentString("Invite code added to clipboard!");
-		Minecraft.getMinecraft().thePlayer.addChatMessage(text);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		StringSelection inviteString = new StringSelection(invite.InviteCode);
-		clipboard.setContents(inviteString , this);
+		
+		if (returnMessage.success)
+		{
+			String inviteCode = (String)returnMessage.getField("inviteCode");
+			TextComponentString text = new TextComponentString("Invite code added to clipboard!");
+			Minecraft.getMinecraft().thePlayer.addChatMessage(text);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection inviteString = new StringSelection(inviteCode);
+			clipboard.setContents(inviteString , this);
+		}
+		else
+		{
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("FAILED:" + returnMessage.message));
+		}
 	}
 	private void handleReturnMessage(StockkeeperReturnMessage returnMessage, Socket clientSocket)
 	{
@@ -112,7 +145,6 @@ public class MessageThread implements Runnable, ClipboardOwner {
 	{
 		try
 		{
-
 			Socket sslsocket = new Socket(StockKeeperConfig.stockkeeperIp, 55555);
 			ObjectOutputStream outputStream = new ObjectOutputStream(sslsocket.getOutputStream());
 			outputStream.writeObject(new EncryptedMessage(message, message.playerUUID, key));
