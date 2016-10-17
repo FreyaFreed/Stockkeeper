@@ -16,7 +16,7 @@ import stockkeeper.network.InviteMessage;
 import stockkeeper.network.MakeGroupMessage;
 import stockkeeper.network.RegisterMessage;
 import stockkeeper.network.StockKeeperMessage;
-import stockkeeper.network.StockKeeperMessage.MessageType;
+import stockkeeper.network.MessageType;
 import stockkeeper.network.checkChestGroupMessage;
 import stockkeeper.worldinfo.WorldInfo;
 

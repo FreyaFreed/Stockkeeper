@@ -64,7 +64,7 @@ public class MessageThread implements Runnable, ClipboardOwner {
 		if(returnMessage.success)	
 		{
 			String itemName = (String)returnMessage.getField("itemName");
-			int amount = (Integer)returnMessage.getField("amount");
+			int amount = (Integer)returnMessage.getField("result");
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Found " + amount + " " + itemName + " in stock."));
 		}
 		else
