@@ -24,11 +24,7 @@ import stockkeeper.gui.ChestGroupEvent;
 import stockkeeper.mod.StockKeeper;
 import stockkeeper.mod.StockKeeperConfig;
 import stockkeeper.mod.StockkeeperMath;
-import stockkeeper.network.ChestGroupReturnMessage;
-import stockkeeper.network.CountReturnMessage;
 import stockkeeper.network.EncryptedMessage;
-import stockkeeper.network.FindItemReturnMessage;
-import stockkeeper.network.InviteReturnMessage;
 import stockkeeper.network.StockKeeperMessage;
 import stockkeeper.network.StockkeeperReturnMessage;
 

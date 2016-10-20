@@ -7,17 +7,8 @@ import stockkeeper.data.Position;
 import stockkeeper.data.Stack;
 import stockkeeper.mod.StockKeeper;
 import stockkeeper.mod.StockKeeperConfig;
-import stockkeeper.network.ChestContentsMessage;
-import stockkeeper.network.CountMessage;
-import stockkeeper.network.FindItemMessage;
-import stockkeeper.network.GroupChangedMessage;
-import stockkeeper.network.InviteGroupMessage;
-import stockkeeper.network.InviteMessage;
-import stockkeeper.network.MakeGroupMessage;
-import stockkeeper.network.RegisterMessage;
 import stockkeeper.network.StockKeeperMessage;
 import stockkeeper.network.MessageType;
-import stockkeeper.network.checkChestGroupMessage;
 import stockkeeper.worldinfo.WorldInfo;
 
 public class MessageFactory {

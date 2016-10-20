@@ -62,7 +62,6 @@ import stockkeeper.encryption.EncryptionUtils;
 import stockkeeper.gui.GroupChangedEvent;
 import stockkeeper.gui.StockKeeperGuiChest;
 import stockkeeper.gui.StockkeeperMenu;
-import stockkeeper.network.ChestContentsMessage;
 import stockkeeper.network.KeyExchangeMessage;
 import stockkeeper.network.KeyExchangeMessage.MessageType;
 import stockkeeper.network.StockKeeperMessage;
@@ -75,7 +74,7 @@ import stockkeeper.worldinfo.WorldInfo;
 public class StockKeeper
 {
 	public static final String MODID = "StockKeeper";
-	public static final String VERSION = "Alpha 0.1.4 Forge:1.10.2";
+	public static final String VERSION = "Alpha 0.1.5 Forge:1.10.2";
 	public static String password;
 	public static SecretKey key;
 	public static boolean isConnected = false;
