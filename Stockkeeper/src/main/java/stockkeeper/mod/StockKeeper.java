@@ -74,7 +74,7 @@ import stockkeeper.worldinfo.WorldInfo;
 public class StockKeeper
 {
 	public static final String MODID = "StockKeeper";
-	public static final String VERSION = "Alpha 0.1.5 Forge:1.10.2";
+	public static final String VERSION = "Alpha 0.1.6 Forge:1.10.2";
 	public static String password;
 	public static SecretKey key;
 	public static boolean isConnected = false;

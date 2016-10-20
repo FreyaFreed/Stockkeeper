@@ -47,7 +47,7 @@ public class MessageThread implements Runnable, ClipboardOwner {
 	private void handleCheckGroup(StockkeeperReturnMessage returnMessage) {
 		if(returnMessage.success)	
 		{
-			String groupName = (String)returnMessage.getField("groupName");
+			String groupName = (String)returnMessage.getField("group");
 			MinecraftForge.EVENT_BUS.post(new ChestGroupEvent(groupName));
 		}
 		else
