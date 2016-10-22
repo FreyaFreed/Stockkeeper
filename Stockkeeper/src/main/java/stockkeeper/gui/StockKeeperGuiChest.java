@@ -37,11 +37,13 @@ public class StockKeeperGuiChest extends GuiChest {
 	@SubscribeEvent
 	void handleChestGroupEvent(ChestGroupEvent event)
 	{
+		
 		this.chestGroup = event.group;
 		if(text != null && this.chestGroup != null)
 			text.setText(this.chestGroup);
 		else if(text != null)
-			text.setText(StockKeeperConfig.defaultGroup);
+			text.setText(StockKeeperConfig.defaultGroup);		
+		
 
 
 	}
@@ -86,6 +88,7 @@ public class StockKeeperGuiChest extends GuiChest {
 			MinecraftForge.EVENT_BUS.post(new GroupChangedEvent(text.getText(), top, bottom));
 		this.chestGroup = "";
 		this.text.setText("");
+		MinecraftForge.EVENT_BUS.unregister(this);
 		super.onGuiClosed();
 	}
 
