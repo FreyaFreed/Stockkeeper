@@ -45,7 +45,7 @@ public class MessageFactory {
 		StockKeeperMessage message = new StockKeeperMessage(MessageType.CHECKGROUP);
 		message.setField("top", top);
 		message.setField("bottom",bottom);
-		addMessageHeader(message);
+		addMessageHeader(message);		
 		return message;
 	}
 
@@ -101,6 +101,12 @@ public class MessageFactory {
 		StockKeeperMessage message = new StockKeeperMessage(MessageType.REGISTER);
 		message.setField("inviteCode",inviteCode);
 		message.setField("password",password);
+		addMessageHeader(message);	
+		return message;
+	}
+
+	public static StockKeeperMessage createCountAllMessage() {
+		StockKeeperMessage message = new StockKeeperMessage(MessageType.COUNTALL);		
 		addMessageHeader(message);	
 		return message;
 	}

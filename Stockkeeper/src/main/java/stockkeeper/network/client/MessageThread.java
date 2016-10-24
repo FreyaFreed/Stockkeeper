@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.SortedMap;
 
 import javax.crypto.SecretKey;
@@ -20,7 +21,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import stockkeeper.data.Position;
+import stockkeeper.data.Stack;
 import stockkeeper.gui.ChestGroupEvent;
+import stockkeeper.gui.OpenOverviewMenuEvent;
 import stockkeeper.mod.StockKeeper;
 import stockkeeper.mod.StockKeeperConfig;
 import stockkeeper.mod.StockkeeperMath;
@@ -116,6 +119,9 @@ public class MessageThread implements Runnable, ClipboardOwner {
 		case FINDITEM:
 			handleFindMessage(returnMessage);
 			break;
+		case COUNTALL:
+			handleCountAll(returnMessage);
+			break;			
 		case INVALID_PASSWORD:
 			handleInvalidPassword();
 			break;
@@ -125,6 +131,15 @@ public class MessageThread implements Runnable, ClipboardOwner {
 		}
 
 	}
+	private void handleCountAll(StockkeeperReturnMessage returnMessage) {
+		if(returnMessage.success)
+		{
+			List<Stack> stacks = (List<Stack>)returnMessage.getField("stacks");
+			MinecraftForge.EVENT_BUS.post(new OpenOverviewMenuEvent(stacks));
+		}
+		
+	}
+
 	private void handleInvalidPassword() {
 		TextComponentString text = new TextComponentString("§4Could not process request: Invalid Password");
 		Minecraft.getMinecraft().thePlayer.addChatMessage(text);

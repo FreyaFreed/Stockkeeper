@@ -24,26 +24,35 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockPortal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.player.inventory.ContainerLocalMenu;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -60,7 +69,10 @@ import stockkeeper.data.Stack;
 import stockkeeper.data.UserCredentials;
 import stockkeeper.encryption.EncryptionUtils;
 import stockkeeper.gui.GroupChangedEvent;
+import stockkeeper.gui.OpenOverviewMenuEvent;
 import stockkeeper.gui.StockKeeperGuiChest;
+import stockkeeper.gui.StockOverviewMenu;
+import stockkeeper.gui.StockkeeperContainer;
 import stockkeeper.gui.StockkeeperMenu;
 import stockkeeper.network.KeyExchangeMessage;
 import stockkeeper.network.KeyExchangeMessage.MessageType;
@@ -144,7 +156,7 @@ public class StockKeeper
 
 	boolean menuopen = false;
 
-	KeyBinding openMenu;
+	KeyBinding openMenu, openCountMenu;
 
 
 	@SubscribeEvent
@@ -160,7 +172,7 @@ public class StockKeeper
 	}
 
 	private void handleAdd(String[] args) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -254,7 +266,8 @@ public class StockKeeper
 	@SubscribeEvent
 	public void handleGuiOpened(GuiOpenEvent event)
 	{
-		LOG.info("GuiEvent is called");
+		
+		//LOG.info("GuiEvent is called");		
 		if(event.getGui() instanceof GuiChest)
 		{
 			if(topChestPos != null && bottomChestPos != null)
@@ -294,7 +307,15 @@ public class StockKeeper
 				{
 					ItemStack stack = lowerChestInv.getStackInSlot(i);
 					if(stack != null)
-						topStacks.add(new Stack(stack.getDisplayName().toLowerCase(),stack.stackSize));
+					{
+						//stack.getItem().getRegistryName()
+						//Item item = stack.getItem();
+						//NBTTagCompound nbt = stack.serializeNBT().toString();
+						//NBTTagCompound nbt2 = JsonToNBT.getTagFromJson(nbt.toString());
+						//ItemStack loaded = ItemStack.loadItemStackFromNBT(nbt);
+						
+						topStacks.add(new Stack(stack.getDisplayName().toLowerCase(),stack.stackSize, stack.serializeNBT().toString()));
+					}
 					else
 						topStacks.add(null);
 				}
@@ -306,7 +327,8 @@ public class StockKeeper
 						ItemStack stack = lowerChestInv.getStackInSlot(i);
 						if(stack != null)
 						{
-							bottomStacks.add(new Stack(stack.getDisplayName(),stack.stackSize));
+							System.out.println(stack.getDisplayName() +" " + Item.getIdFromItem(stack.getItem()));
+							bottomStacks.add(new Stack(stack.getDisplayName(),stack.stackSize,stack.serializeNBT().toString()));
 						}
 						else
 						{
@@ -337,8 +359,8 @@ public class StockKeeper
 
 	private void handleHelp() {
 		String newLine = "\n";//System.getProperty("line.separator");
-		String commandUsage = ""
-				+ "§4Count: §6counts the amount of the specific item in all chests that the use has access to." + newLine
+		String commandUsage = "" +
+				TextFormatting.RED + "§4Count: §6counts the amount of the specific item in all chests that the use has access to." + newLine
 				+ " §6Usage: §f/stock count [itemName] §6Spaces in items are represented with '_', not case senstive" + newLine
 				+ "§4Find: §6finds the closest chest containing the item." + newLine
 				+ " §6Usage: §f/stock find [itemName] §6Spaces in items are represented with '_', not case senstive " + newLine
@@ -394,6 +416,8 @@ public class StockKeeper
 		menu = new StockkeeperMenu();
 		openMenu = new KeyBinding("Open Config Menu", org.lwjgl.input.Keyboard.KEY_P, "Stockkeeper");
 		ClientRegistry.registerKeyBinding(openMenu);
+		openCountMenu = new KeyBinding("Open Stock Overview", org.lwjgl.input.Keyboard.KEY_O, "Stockkeeper");
+		ClientRegistry.registerKeyBinding(openCountMenu);
 		
 	}
 
@@ -405,6 +429,19 @@ public class StockKeeper
 			Minecraft.getMinecraft().displayGuiScreen(new StockkeeperMenu());
 
 		}
+		if(openCountMenu.isKeyDown())
+		{
+			client.sendMessage(MessageFactory.createCountAllMessage());			
+			
+
+		}
+	}
+	
+	@SubscribeEvent
+	void openOverviewMenu(OpenOverviewMenuEvent event)
+	{
+		Minecraft.getMinecraft().displayGuiScreen(new StockOverviewMenu(new StockkeeperContainer(event.stacks)));
+		
 	}
 
 	@EventHandler
@@ -482,6 +519,7 @@ public class StockKeeper
 	public void RightClick(RightClickBlock event)
 	{
 		TileEntity entity = event.getWorld().getTileEntity(event.getPos());
+		
 		if(entity instanceof TileEntityChest)
 		{
 			TileEntityChest chest = (TileEntityChest)entity;
