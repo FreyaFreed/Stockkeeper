@@ -9,10 +9,14 @@ buildscript {
         }
     }
     dependencies {
+    
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.6.RELEASE'
     }
 }
+apply plugin: 'eclipse'
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'spring-boot'
 
 /*
 // for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
@@ -43,12 +47,18 @@ minecraft {
 }
 
 dependencies {
+    
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
       
     // real examples
+     compile("org.springframework.boot:spring-boot-starter")
+     compile 'org.springframework:spring-web'
+     compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
+     compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.1'
+     compile("com.fasterxml.jackson.core:jackson-databind")
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
@@ -64,6 +74,9 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+}
+springBoot {
+    mainClass = "com.example.Main"
 }
 
 processResources
