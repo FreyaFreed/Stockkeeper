@@ -61,18 +61,7 @@ public class StockkeeperMenu extends GuiScreen {
 	{
 		return null;
 	}
-	private void connect() {
-		if(!StockKeeper.isConnected)
-		{
-			if(StockKeeper.establishSession())
-				Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Succesfully connected"));
-			else
-				Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Failed to connect"));
-		}
-		else
-		{
-			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("Already connected!"));
-		}
+	private void connect() {	
 
 
 	}
